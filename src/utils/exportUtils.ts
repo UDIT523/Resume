@@ -83,7 +83,36 @@ const getTemplateComponent = (template: string) => {
 };
 
 export const exportToHTML = (data: ResumeData, theme: ResumeTheme) => {
-  const html = generateResumeHTML(data, theme);
+  const previewElement = document.getElementById('resume-preview-container');
+  if (!previewElement) return;
+
+  const styles = Array.from(document.styleSheets)
+    .map(styleSheet => {
+      try {
+        return Array.from(styleSheet.cssRules)
+          .map(rule => rule.cssText)
+          .join('');
+      } catch (e) {
+        console.log('Could not read stylesheet rules:', e);
+        return '';
+      }
+    })
+    .join('');
+
+  const html = `
+    <html>
+      <head>
+        <title>Resume</title>
+        <style>${styles}</style>
+      </head>
+      <body>
+        <div style="width: 8.5in; height: 11in; margin: auto;">
+          ${previewElement.innerHTML}
+        </div>
+      </body>
+    </html>
+  `;
+
   const blob = new Blob([html], { type: 'text/html' });
   const url = URL.createObjectURL(blob);
   
@@ -97,7 +126,34 @@ export const exportToHTML = (data: ResumeData, theme: ResumeTheme) => {
 };
 
 export const exportToWord = (data: ResumeData, theme: ResumeTheme) => {
-  const html = generateResumeHTML(data, theme);
+  const previewElement = document.getElementById('resume-preview-container');
+  if (!previewElement) return;
+
+  const styles = Array.from(document.styleSheets)
+    .map(styleSheet => {
+      try {
+        return Array.from(styleSheet.cssRules)
+          .map(rule => rule.cssText)
+          .join('');
+      } catch (e) {
+        console.log('Could not read stylesheet rules:', e);
+        return '';
+      }
+    })
+    .join('');
+
+  const html = `
+    <html>
+      <head>
+        <title>Resume</title>
+        <style>${styles}</style>
+      </head>
+      <body>
+        ${previewElement.innerHTML}
+      </body>
+    </html>
+  `;
+
   const blob = new Blob([html], { type: 'application/msword' });
   const url = URL.createObjectURL(blob);
   
@@ -112,160 +168,4 @@ export const exportToWord = (data: ResumeData, theme: ResumeTheme) => {
 
 export const exportToExcelFormatted = (data: ResumeData, theme: ResumeTheme, templateName: string = 'professional') => {
   exportToExcel(data, theme, templateName);
-};
-
-const generateResumeHTML = (data: ResumeData, theme: ResumeTheme): string => {
-  const { personalInfo, summary, workExperience, education, skills, certifications, projects, languages, awards } = data;
-  
-  const formatDate = (dateString: string) => {
-    if (!dateString) return '';
-    const date = new Date(dateString + '-01');
-    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
-  };
-  
-  const getSkillsByCategory = (category: string) => {
-    return skills.filter(skill => skill.category === category);
-  };
-
-  return `
-    <div class="resume-container">
-      <div class="header">
-        <h1>${personalInfo.firstName} ${personalInfo.lastName}</h1>
-        <div class="contact-info">
-          <span>${personalInfo.email}</span>
-          <span>${personalInfo.phone}</span>
-          <span>${personalInfo.location}</span>
-          ${personalInfo.website ? `<span>${personalInfo.website}</span>` : ''}
-        </div>
-      </div>
-
-      ${summary ? `
-        <div class="section">
-          <h2 class="section-title">Professional Summary</h2>
-          <p>${summary}</p>
-        </div>
-      ` : ''}
-
-      ${workExperience.length > 0 ? `
-        <div class="section">
-          <h2 class="section-title">Work Experience</h2>
-          ${workExperience.map(exp => `
-            <div class="experience-item">
-              <div class="item-header">
-                <div>
-                  <div class="item-title">${exp.position}</div>
-                  <div class="item-company">${exp.company} - ${exp.location}</div>
-                </div>
-                <div class="item-date">${formatDate(exp.startDate)} - ${exp.current ? 'Present' : formatDate(exp.endDate)}</div>
-              </div>
-              <p>${exp.description}</p>
-              ${exp.achievements.filter(Boolean).length > 0 ? `
-                <ul class="achievement-list">
-                  ${exp.achievements.filter(Boolean).map(achievement => `<li>${achievement}</li>`).join('')}
-                </ul>
-              ` : ''}
-            </div>
-          `).join('')}
-        </div>
-      ` : ''}
-
-      ${education.length > 0 ? `
-        <div class="section">
-          <h2 class="section-title">Education</h2>
-          ${education.map(edu => `
-            <div class="education-item">
-              <div class="item-header">
-                <div>
-                  <div class="item-title">${edu.degree} in ${edu.field}</div>
-                  <div class="item-company">${edu.institution} - ${edu.location}</div>
-                  ${edu.gpa ? `<div>GPA: ${edu.gpa}</div>` : ''}
-                  ${edu.honors ? `<div>${edu.honors}</div>` : ''}
-                </div>
-                <div class="item-date">${formatDate(edu.startDate)} - ${formatDate(edu.endDate)}</div>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      ` : ''}
-
-      ${skills.length > 0 ? `
-        <div class="section">
-          <h2 class="section-title">Skills</h2>
-          <div class="skills-grid">
-            ${['Technical', 'Soft', 'Language'].map(category => {
-              const categorySkills = getSkillsByCategory(category);
-              return categorySkills.length > 0 ? `
-                <div class="skill-category">
-                  <h4>${category === 'Technical' ? 'Technical Skills' : category === 'Soft' ? 'Soft Skills' : 'Languages'}</h4>
-                  ${categorySkills.map(skill => `
-                    <div class="skill-item">
-                      <span>${skill.name}</span>
-                      <span>${skill.level}</span>
-                    </div>
-                  `).join('')}
-                </div>
-              ` : '';
-            }).join('')}
-          </div>
-        </div>
-      ` : ''}
-
-      ${projects.length > 0 ? `
-        <div class="section">
-          <h2 class="section-title">Projects</h2>
-          ${projects.map(project => `
-            <div class="experience-item">
-              <div class="item-header">
-                <div>
-                  <div class="item-title">${project.name}</div>
-                </div>
-                <div class="item-date">${formatDate(project.startDate)} - ${formatDate(project.endDate)}</div>
-              </div>
-              <p>${project.description}</p>
-              ${project.technologies.length > 0 ? `
-                <div style="margin-top: 10px;">
-                  <strong>Technologies:</strong> ${project.technologies.join(', ')}
-                </div>
-              ` : ''}
-            </div>
-          `).join('')}
-        </div>
-      ` : ''}
-
-      ${certifications.length > 0 ? `
-        <div class="section">
-          <h2 class="section-title">Certifications</h2>
-          ${certifications.map(cert => `
-            <div class="education-item">
-              <div class="item-header">
-                <div>
-                  <div class="item-title">${cert.name}</div>
-                  <div class="item-company">${cert.issuer}</div>
-                </div>
-                <div class="item-date">${cert.date}</div>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      ` : ''}
-
-      ${awards.length > 0 ? `
-        <div class="section">
-          <h2 class="section-title">Awards & Achievements</h2>
-          ${awards.map(award => `
-            <div class="education-item">
-              <div class="item-header">
-                <div>
-                  <div class="item-title">${award.name}</div>
-                  <div class="item-company">${award.issuer}</div>
-                  <p>${award.description}</p>
-                </div>
-                <div class="item-date">${award.date}</div>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      ` : ''}
-    </div>
-  `;
 };
