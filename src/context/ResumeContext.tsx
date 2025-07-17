@@ -58,7 +58,7 @@ const initialTheme: ResumeTheme = {
   spacing: '1rem'
 };
 
-const initialState: ResumeState = {
+export const initialState: ResumeState = {
   data: initialData,
   theme: initialTheme,
   selectedTemplate: 'modern',
@@ -157,19 +157,6 @@ function resumeReducer(state: ResumeState, action: ResumeAction): ResumeState {
 
 export function ResumeProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(resumeReducer, initialState);
-
-  // Load data from localStorage on mount
-  useEffect(() => {
-    const savedData = localStorage.getItem('resumeBuilderData');
-    if (savedData) {
-      try {
-        const parsedData = JSON.parse(savedData);
-        dispatch({ type: 'LOAD_DATA', payload: parsedData });
-      } catch (error) {
-        console.error('Error loading saved data:', error);
-      }
-    }
-  }, []);
 
   // Save data to localStorage whenever state changes
   useEffect(() => {

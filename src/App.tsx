@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ResumeProvider, useResume } from './context/ResumeContext';
+import { ResumeProvider, useResume, initialState } from './context/ResumeContext';
 import Header from './components/Layout/Header';
 import Sidebar from './components/Layout/Sidebar';
 import MainContent from './components/MainContent';
@@ -18,6 +18,13 @@ function AppContent() {
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [showTemplates, setShowTemplates] = useState(false);
   const [showAI, setShowAI] = useState(false);
+  const [sessionStarted, setSessionStarted] = useState(false);
+  const [hasSavedData, setHasSavedData] = useState(false);
+
+  useEffect(() => {
+    const savedData = localStorage.getItem('resumeBuilderData');
+    setHasSavedData(!!savedData);
+  }, []);
 
   // Debug function to test AI toggle
   const handleToggleAI = () => {
@@ -107,6 +114,25 @@ function AppContent() {
     alert('Progress saved!');
   };
 
+  const handleStartNew = () => {
+    localStorage.removeItem('resumeBuilderData');
+    dispatch({ type: 'LOAD_DATA', payload: initialState });
+    setSessionStarted(true);
+  };
+
+  const handleContinue = () => {
+    const savedData = localStorage.getItem('resumeBuilderData');
+    if (savedData) {
+      try {
+        const parsedData = JSON.parse(savedData);
+        dispatch({ type: 'LOAD_DATA', payload: parsedData });
+      } catch (error) {
+        console.error('Error loading saved data:', error);
+      }
+    }
+    setSessionStarted(true);
+  };
+
   const completionPercentage = (() => {
     const { data } = state;
     let completed = 0;
@@ -125,6 +151,31 @@ function AppContent() {
 
     return Math.round((completed / total) * 100);
   })();
+
+  if (!sessionStarted) {
+    return (
+      <div className="h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold mb-8">Resume Builder</h1>
+          <div className="space-x-4">
+            <button
+              onClick={handleStartNew}
+              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Start New Resume
+            </button>
+            <button
+              onClick={handleContinue}
+              disabled={!hasSavedData}
+              className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-400"
+            >
+              Continue Last Session
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (showTemplates) {
     return <TemplatesPage onBack={() => setShowTemplates(false)} />;
