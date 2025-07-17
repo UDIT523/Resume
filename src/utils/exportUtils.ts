@@ -1,5 +1,4 @@
 import { ResumeData, ResumeTheme } from '../types/resume';
-import { exportToExcel } from './excelExport';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import ModernTemplate from '../components/Templates/ModernTemplate';
@@ -164,8 +163,4 @@ export const exportToWord = (data: ResumeData, theme: ResumeTheme) => {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
-};
-
-export const exportToExcelFormatted = (data: ResumeData, theme: ResumeTheme, templateName: string = 'professional') => {
-  exportToExcel(data, theme, templateName);
 };

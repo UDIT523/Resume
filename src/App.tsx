@@ -8,7 +8,7 @@ import CustomizationPanel from './components/Customization/CustomizationPanel';
 import ATSAnalysisPanel from './components/Analysis/ATSAnalysisPanel';
 import AIAssistant from './components/AI/AIAssistant';
 import TemplatesPage from './components/Templates/TemplatesPage';
-import { exportToPDF, exportToHTML, exportToWord, exportToExcelFormatted } from './utils/exportUtils';
+import { exportToPDF, exportToHTML, exportToWord } from './utils/exportUtils';
 import { calculateATSScore } from './utils/atsAnalysis';
 
 function AppContent() {
@@ -87,7 +87,7 @@ function AppContent() {
     dispatch({ type: 'UPDATE_ATS_ANALYSIS', payload: atsAnalysis });
   }, [state.data, dispatch]);
 
-  const handleExport = (format: 'pdf' | 'html' | 'word' | 'excel') => {
+  const handleExport = (format: 'pdf' | 'html' | 'word') => {
     const { data, theme } = state;
     
     switch (format) {
@@ -99,9 +99,6 @@ function AppContent() {
         break;
       case 'word':
         exportToWord(data, theme);
-        break;
-      case 'excel':
-        exportToExcelFormatted(data, theme, state.selectedTemplate);
         break;
     }
     
@@ -211,12 +208,6 @@ function AppContent() {
             className="w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors"
           >
             Export as Word
-          </button>
-          <button
-            onClick={() => handleExport('excel')}
-            className="w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors"
-          >
-            Export as Excel
           </button>
         </div>
       )}
