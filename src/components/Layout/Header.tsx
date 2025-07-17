@@ -1,5 +1,5 @@
 import React from 'react';
-import { FileText, Download, Settings, BarChart3, Bot } from 'lucide-react';
+import { FileText, Download, Settings, BarChart3, Bot, Save } from 'lucide-react';
 import { useResume } from '../../context/ResumeContext';
 
 interface HeaderProps {
@@ -7,9 +7,10 @@ interface HeaderProps {
   onToggleSettings: () => void;
   onToggleAnalysis: () => void;
   onToggleAI: () => void;
+  onSave: () => void;
 }
 
-export default function Header({ onExport, onToggleSettings, onToggleAnalysis, onToggleAI }: HeaderProps) {
+export default function Header({ onExport, onToggleSettings, onToggleAnalysis, onToggleAI, onSave }: HeaderProps) {
   const { state } = useResume();
 
   return (
@@ -58,6 +59,14 @@ export default function Header({ onExport, onToggleSettings, onToggleAnalysis, o
               className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
             >
               <Settings className="h-5 w-5" />
+            </button>
+            
+            <button
+              onClick={onSave}
+              className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+            >
+              <Save className="h-4 w-4" />
+              <span>Save Progress</span>
             </button>
             
             <button

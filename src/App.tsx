@@ -101,6 +101,12 @@ function AppContent() {
     setShowExportMenu(false);
   };
 
+  const handleSave = () => {
+    localStorage.setItem('resumeBuilderData', JSON.stringify(state));
+    // Optionally, show a notification to the user
+    alert('Progress saved!');
+  };
+
   const completionPercentage = (() => {
     const { data } = state;
     let completed = 0;
@@ -131,6 +137,7 @@ function AppContent() {
         onToggleSettings={() => setShowSettings(!showSettings)}
         onToggleAnalysis={() => setShowAnalysis(!showAnalysis)}
         onToggleAI={handleToggleAI}
+        onSave={handleSave}
       />
       
       {/* Export Menu */}
