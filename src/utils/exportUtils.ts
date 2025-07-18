@@ -128,27 +128,27 @@ export const exportToWord = (data: ResumeData, theme: ResumeTheme) => {
   const previewElement = document.getElementById('resume-preview-container');
   if (!previewElement) return;
 
-  const styles = Array.from(document.styleSheets)
-    .map(styleSheet => {
-      try {
-        return Array.from(styleSheet.cssRules)
-          .map(rule => rule.cssText)
-          .join('');
-      } catch (e) {
-        console.log('Could not read stylesheet rules:', e);
-        return '';
-      }
-    })
-    .join('');
+  const clonedElement = previewElement.cloneNode(true) as HTMLElement;
+
+  // Inline all styles
+  const elements = clonedElement.querySelectorAll('*');
+  elements.forEach((el) => {
+    const computedStyle = getComputedStyle(el);
+    let styleString = '';
+    for (let i = 0; i < computedStyle.length; i++) {
+      const prop = computedStyle[i];
+      styleString += `${prop}:${computedStyle.getPropertyValue(prop)};`;
+    }
+    el.setAttribute('style', styleString);
+  });
 
   const html = `
     <html>
       <head>
         <title>Resume</title>
-        <style>${styles}</style>
       </head>
       <body>
-        ${previewElement.innerHTML}
+        ${clonedElement.innerHTML}
       </body>
     </html>
   `;

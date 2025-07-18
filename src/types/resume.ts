@@ -105,25 +105,12 @@ export interface ATSAnalysis {
   suggestions: string[];
 }
 
-export type TemplateType = 
-  | 'modern' 
-  | 'professional' 
+export type TemplateType =
+  | 'modern'
+  | 'professional'
   | 'creative'
+  | 'minimalist'
   | 'academic'
-  | 'classic'
-  | 'minimal'
-  | 'elegant'
   | 'compact'
-  | 'banking'
-  | 'tech'
-  | 'executive'
-  | 'consulting'
-  | 'healthcare'
-  | 'legal'
-  | 'sales'
-  | 'startup'
-  | 'international'
-  | 'graduate'
-  | 'freelancer'
-  | 'nonprofit'
-  | 'government';
+  | 'elegant'
+  | 'classic';

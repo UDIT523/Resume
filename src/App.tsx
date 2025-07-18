@@ -175,7 +175,7 @@ function AppContent() {
   }
 
   if (showTemplates) {
-    return <TemplatesPage onBack={() => setShowTemplates(false)} />;
+    return <TemplatesPage />;
   }
 
   return (

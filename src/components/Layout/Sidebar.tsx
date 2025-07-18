@@ -14,7 +14,6 @@ import {
 import { useResume } from '../../context/ResumeContext';
 
 const sections = [
-  { id: 'templates', label: 'Templates', icon: Layout },
   { id: 'personal', label: 'Personal Info', icon: User },
   { id: 'summary', label: 'Summary', icon: FileText },
   { id: 'experience', label: 'Experience', icon: Briefcase },
