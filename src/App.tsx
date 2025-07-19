@@ -8,6 +8,7 @@ import CustomizationPanel from './components/Customization/CustomizationPanel';
 import ATSAnalysisPanel from './components/Analysis/ATSAnalysisPanel';
 import AIAssistant from './components/AI/AIAssistant';
 import TemplatesPage from './components/Templates/TemplatesPage';
+import HomePage from './components/home/HomePage'; // Import HomePage
 import { exportToPDF, exportToHTML, exportToWord } from './utils/exportUtils';
 import { calculateATSScore } from './utils/atsAnalysis';
 
@@ -117,7 +118,7 @@ function AppContent() {
     setSessionStarted(true);
   };
 
-  const handleLoad = () => { // Renamed from handleContinue
+  const handleLoad = () => {
     const savedData = localStorage.getItem('resumeBuilderData');
     if (savedData) {
       try {
@@ -150,28 +151,7 @@ function AppContent() {
   })();
 
   if (!sessionStarted) {
-    return (
-      <div className="h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold mb-8">Resume Builder</h1>
-          <div className="space-x-4">
-            <button
-              onClick={handleStartNew}
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Start New Resume
-            </button>
-            <button
-              onClick={handleLoad} // Changed to handleLoad
-              disabled={!hasSavedData}
-              className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-400"
-            >
-              Continue Last Session
-            </button>
-          </div>
-        </div>
-      </div>
-    );
+    return <HomePage onStartNew={handleStartNew} onLoad={handleLoad} />;
   }
 
   if (showTemplates) {
@@ -186,7 +166,7 @@ function AppContent() {
         onToggleAnalysis={() => setShowAnalysis(!showAnalysis)}
         onToggleAI={handleToggleAI}
         onSave={handleSave}
-        onLoad={handleLoad} // Added onLoad prop
+        onLoad={handleLoad}
       />
       
       {/* Export Menu */}
