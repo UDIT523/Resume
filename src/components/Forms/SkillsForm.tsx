@@ -54,16 +54,17 @@ export default function SkillsForm() {
     }
   };
 
-  const renderStars = (level: string) => {
-    const levels = { 'Beginner': 1, 'Intermediate': 2, 'Advanced': 3, 'Expert': 4 };
-    const starCount = levels[level as keyof typeof levels] || 0;
-    
+  const StarRating = ({ level, onLevelChange }: { level: Skill['level'], onLevelChange: (newLevel: Skill['level']) => void }) => {
+    const levels: Skill['level'][] = ['Beginner', 'Intermediate', 'Advanced', 'Expert'];
+    const starCount = levels.indexOf(level) + 1;
+
     return (
       <div className="flex">
-        {[...Array(4)].map((_, i) => (
+        {levels.map((levelName, i) => (
           <Star
             key={i}
-            className={`h-4 w-4 ${i < starCount ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
+            className={`h-4 w-4 cursor-pointer ${i < starCount ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
+            onClick={() => onLevelChange(levelName)}
           />
         ))}
       </div>
@@ -147,7 +148,10 @@ export default function SkillsForm() {
                   <div className="flex-1">
                     <div className="flex items-center space-x-3">
                       <span className="font-medium text-gray-900">{skill.name}</span>
-                      {renderStars(skill.level)}
+                      <StarRating 
+                        level={skill.level} 
+                        onLevelChange={(newLevel) => handleUpdateSkill(skill.id, 'level', newLevel)}
+                      />
                     </div>
                     <div className="flex items-center space-x-2 mt-1">
                       <span className={`px-2 py-1 text-xs rounded-full ${getLevelColor(skill.level)}`}>

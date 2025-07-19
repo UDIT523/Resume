@@ -124,51 +124,52 @@ export const exportToHTML = (data: ResumeData, theme: ResumeTheme) => {
   URL.revokeObjectURL(url);
 };
 
-export const exportToWord = (data: ResumeData, theme: ResumeTheme) => {
+export const exportToWord = async (data: ResumeData, theme: ResumeTheme) => {
   const previewElement = document.getElementById('resume-preview-container');
   if (!previewElement) return;
 
-  const clonedElement = previewElement.cloneNode(true) as HTMLElement;
+  const htmlToDocx = (await import('html-to-docx')).default;
+  const { saveAs } = await import('file-saver');
 
-  // Function to recursively inline styles
-  const inlineStyles = (element: HTMLElement) => {
-    const computedStyle = window.getComputedStyle(element);
-    let styleString = '';
-    for (let i = 0; i < computedStyle.length; i++) {
-      const prop = computedStyle[i];
-      styleString += `${prop}: ${computedStyle.getPropertyValue(prop)}; `;
-    }
-    element.setAttribute('style', styleString);
+  const styles = Array.from(document.styleSheets)
+    .map(styleSheet => {
+      try {
+        return Array.from(styleSheet.cssRules)
+          .map(rule => rule.cssText)
+          .join('');
+      } catch (e) {
+        console.log('Could not read stylesheet rules:', e);
+        return '';
+      }
+    })
+    .join('');
 
-    const children = element.children;
-    for (let i = 0; i < children.length; i++) {
-      inlineStyles(children[i] as HTMLElement);
-    }
-  };
-
-  inlineStyles(clonedElement);
-
-  const html = `
+  const htmlContent = `
     <!DOCTYPE html>
     <html>
       <head>
         <meta charset="UTF-8">
         <title>Resume</title>
+        <style>${styles}</style>
       </head>
       <body>
-        ${clonedElement.innerHTML}
+        ${previewElement.innerHTML}
       </body>
     </html>
   `;
 
-  const blob = new Blob([html], { type: 'application/msword' });
-  const url = URL.createObjectURL(blob);
-  
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `${data.personalInfo.firstName}_${data.personalInfo.lastName}_Resume.doc`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  try {
+    const fileBuffer = await htmlToDocx(htmlContent, undefined, {
+      table: { row: { cantSplit: true } },
+      footer: true,
+      pageNumber: true,
+    });
+
+    const blob = new Blob([fileBuffer as BlobPart], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+
+    saveAs(blob, `${data.personalInfo.firstName}_${data.personalInfo.lastName}_Resume.docx`);
+  } catch (error) {
+    console.error('Error converting to DOCX:', error);
+    alert('Failed to export to Word. Please check the console for details.');
+  }
 };

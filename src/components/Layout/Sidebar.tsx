@@ -36,9 +36,21 @@ export default function Sidebar({ onTemplatesClick }: SidebarProps) {
     const { data } = state;
     
     switch (sectionId) {
-      case 'personal':
-        const personalFields = Object.values(data.personalInfo).filter(Boolean);
-        return (personalFields.length / 5) * 100; // 5 required fields
+      case 'personal': {
+        const requiredFields = [
+          'firstName',
+          'lastName',
+          'email',
+          'phone',
+          'location',
+        ];
+        const filledFields = requiredFields.filter(
+          (field) => !!data.personalInfo[field as keyof typeof data.personalInfo]
+        ).length;
+        const totalFields = requiredFields.length;
+        const completion = Math.min((filledFields / totalFields) * 100, 100);
+        return completion;
+      }
       case 'summary':
         return data.summary.length > 50 ? 100 : 0;
       case 'experience':

@@ -88,22 +88,27 @@ function AppContent() {
     dispatch({ type: 'UPDATE_ATS_ANALYSIS', payload: atsAnalysis });
   }, [state.data, dispatch]);
 
-  const handleExport = (format: 'pdf' | 'html' | 'word') => {
+  const handleExport = async (format: 'pdf' | 'html' | 'word') => {
     const { data, theme } = state;
     
-    switch (format) {
-      case 'pdf':
-        exportToPDF();
-        break;
-      case 'html':
-        exportToHTML(data, theme);
-        break;
-      case 'word':
-        exportToWord(data, theme);
-        break;
+    try {
+      switch (format) {
+        case 'pdf':
+          await exportToPDF();
+          break;
+        case 'html':
+          exportToHTML(data, theme);
+          break;
+        case 'word':
+          await exportToWord(data, theme);
+          break;
+      }
+    } catch (error) {
+      console.error('Export failed:', error);
+      alert('An error occurred during the export process. Please check the console for details.');
+    } finally {
+      setShowExportMenu(false);
     }
-    
-    setShowExportMenu(false);
   };
 
   const handleSave = async () => {
