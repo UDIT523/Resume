@@ -26,10 +26,9 @@ export default function Header({ onExport, onToggleSettings, onToggleAnalysis, o
               aria-label="Go to Home"
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125h9.75a1.125 1.125 0 001.125-1.125V9.75m-6 9.375l.001.002-.001.002" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
               </svg>
             </button>
-            <FileText className="h-8 w-8 text-blue-600" />
             <h1 className="text-xl font-bold text-gray-900">Resume Builder</h1>
           </div>
           

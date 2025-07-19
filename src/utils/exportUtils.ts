@@ -130,21 +130,29 @@ export const exportToWord = (data: ResumeData, theme: ResumeTheme) => {
 
   const clonedElement = previewElement.cloneNode(true) as HTMLElement;
 
-  // Inline all styles
-  const elements = clonedElement.querySelectorAll('*');
-  elements.forEach((el) => {
-    const computedStyle = getComputedStyle(el);
+  // Function to recursively inline styles
+  const inlineStyles = (element: HTMLElement) => {
+    const computedStyle = window.getComputedStyle(element);
     let styleString = '';
     for (let i = 0; i < computedStyle.length; i++) {
       const prop = computedStyle[i];
-      styleString += `${prop}:${computedStyle.getPropertyValue(prop)};`;
+      styleString += `${prop}: ${computedStyle.getPropertyValue(prop)}; `;
     }
-    el.setAttribute('style', styleString);
-  });
+    element.setAttribute('style', styleString);
+
+    const children = element.children;
+    for (let i = 0; i < children.length; i++) {
+      inlineStyles(children[i] as HTMLElement);
+    }
+  };
+
+  inlineStyles(clonedElement);
 
   const html = `
+    <!DOCTYPE html>
     <html>
       <head>
+        <meta charset="UTF-8">
         <title>Resume</title>
       </head>
       <body>
