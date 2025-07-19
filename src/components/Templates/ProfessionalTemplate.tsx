@@ -224,7 +224,13 @@ export default function ProfessionalTemplate({ data, theme }: ProfessionalTempla
                 <div className="flex justify-between items-start">
                   <div>
                     <h3 className="font-bold" style={{ color: theme.secondaryColor }}>
-                      {cert.name}
+                      {cert.credentialId ? (
+                        <a href={cert.credentialId} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                          {cert.name}
+                        </a>
+                      ) : (
+                        cert.name
+                      )}
                     </h3>
                     <p className="text-gray-700">{cert.issuer}</p>
                   </div>
