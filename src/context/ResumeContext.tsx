@@ -158,10 +158,10 @@ function resumeReducer(state: ResumeState, action: ResumeAction): ResumeState {
 export function ResumeProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(resumeReducer, initialState);
 
-  // Save data to localStorage whenever state changes
-  useEffect(() => {
-    localStorage.setItem('resumeBuilderData', JSON.stringify(state));
-  }, [state]);
+  // Removed automatic save to localStorage here to avoid conflicts with manual save/load in App.tsx
+  // useEffect(() => {
+  //   localStorage.setItem('resumeBuilderData', JSON.stringify(state));
+  // }, [state]);
 
   return (
     <ResumeContext.Provider value={{ state, dispatch }}>

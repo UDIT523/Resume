@@ -106,10 +106,36 @@ function AppContent() {
     setShowExportMenu(false);
   };
 
-  const handleSave = () => {
-    localStorage.setItem('resumeBuilderData', JSON.stringify(state));
-    // Optionally, show a notification to the user
-    alert('Progress saved!');
+  const handleSave = async () => {
+    const dataToSave = {
+      data: state.data,
+      theme: state.theme,
+      selectedTemplate: state.selectedTemplate,
+    };
+    const jsonString = JSON.stringify(dataToSave, null, 2);
+
+    if ('showSaveFilePicker' in window) {
+      try {
+        const fileHandle = await (window as any).showSaveFilePicker({
+          suggestedName: 'resumind_progress.json',
+          types: [{
+            description: 'JSON Files',
+            accept: { 'application/json': ['.json'] },
+          }],
+        });
+        const writable = await fileHandle.createWritable();
+        await writable.write(jsonString);
+        await writable.close();
+        alert('Progress saved to file!');
+      } catch (error) {
+        console.error('Error saving file:', error);
+        alert('Failed to save progress to file. Please try again or check console for details.');
+      }
+    } else {
+      // Fallback for browsers that do not support showSaveFilePicker
+      localStorage.setItem('resumeBuilderData', jsonString);
+      alert('Progress saved to browser storage (your browser does not support saving to file directly).');
+    }
   };
 
   const handleStartNew = () => {
@@ -118,14 +144,53 @@ function AppContent() {
     setSessionStarted(true);
   };
 
-  const handleLoad = () => {
-    const savedData = localStorage.getItem('resumeBuilderData');
-    if (savedData) {
+  const handleLoad = async () => {
+    if ('showOpenFilePicker' in window) {
       try {
-        const parsedData = JSON.parse(savedData);
-        dispatch({ type: 'LOAD_DATA', payload: parsedData });
+        const [fileHandle] = await (window as any).showOpenFilePicker({
+          types: [{
+            description: 'JSON Files',
+            accept: { 'application/json': ['.json'] },
+          }],
+          multiple: false,
+        });
+        const file = await fileHandle.getFile();
+        const contents = await file.text();
+        const parsedData = JSON.parse(contents);
+
+        const loadedState = {
+          ...initialState,
+          data: parsedData.data || initialState.data,
+          theme: parsedData.theme || initialState.theme,
+          selectedTemplate: parsedData.selectedTemplate || initialState.selectedTemplate,
+        };
+        dispatch({ type: 'LOAD_DATA', payload: loadedState });
+        alert('Progress loaded from file!');
       } catch (error) {
-        console.error('Error loading saved data:', error);
+        console.error('Error loading file:', error);
+        alert('Failed to load progress from file. Please try again or check console for details.');
+      }
+    } else {
+      // Fallback for browsers that do not support showOpenFilePicker
+      const savedData = localStorage.getItem('resumeBuilderData');
+      if (savedData) {
+        try {
+          const parsedData = JSON.parse(savedData);
+          const loadedState = {
+            ...initialState,
+            data: parsedData.data || initialState.data,
+            theme: parsedData.theme || initialState.theme,
+            selectedTemplate: parsedData.selectedTemplate || initialState.selectedTemplate,
+          };
+          dispatch({ type: 'LOAD_DATA', payload: loadedState });
+          alert('Progress loaded from browser storage.');
+        } catch (error) {
+          console.error('Error loading saved data from browser storage:', error);
+          alert('Error loading saved data from browser storage. Starting a new session.');
+          handleStartNew();
+        }
+      } else {
+        alert('No saved data found in browser storage.');
       }
     }
     setSessionStarted(true);

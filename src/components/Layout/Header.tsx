@@ -75,7 +75,7 @@ export default function Header({ onExport, onToggleSettings, onToggleAnalysis, o
             {/* Load Button */}
             <button
               onClick={onLoad}
-              className="flex items-center space-x-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+              className="flex items-center space-x-2 px-4 py-2 bg-gray-700 text-white rounded-xl hover:bg-gray-800 transition-colors"
             >
               <FolderOpen className="h-4 w-4" />
               <span>Load</span>
@@ -83,7 +83,7 @@ export default function Header({ onExport, onToggleSettings, onToggleAnalysis, o
             
             <button
               onClick={onSave}
-              className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-colors"
             >
               <Save className="h-4 w-4" />
               <span>Save Progress</span>
