@@ -8,7 +8,7 @@ const HomePageHeader: React.FC<HomePageHeaderProps> = ({ onStartNew }) => {
   return (
     <div className="text-center py-16 px-4">
       <h1 className="text-5xl font-extrabold text-gray-900 mb-4">
-        Welcome to Resumind!!
+        Welcome
       </h1>
       <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
         Craft a standout resume that showcases your skills and helps you land your dream job.

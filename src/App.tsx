@@ -131,6 +131,10 @@ function AppContent() {
     setSessionStarted(true);
   };
 
+  const handleGoHome = () => {
+    setSessionStarted(false);
+  };
+
   const completionPercentage = (() => {
     const { data } = state;
     let completed = 0;
@@ -167,6 +171,7 @@ function AppContent() {
         onToggleAI={handleToggleAI}
         onSave={handleSave}
         onLoad={handleLoad}
+        onGoHome={handleGoHome} // Pass onGoHome prop
       />
       
       {/* Export Menu */}

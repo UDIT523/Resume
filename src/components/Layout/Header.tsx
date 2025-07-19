@@ -8,10 +8,11 @@ interface HeaderProps {
   onToggleAnalysis: () => void;
   onToggleAI: () => void;
   onSave: () => void;
-  onLoad: () => void; // Added onLoad prop
+  onLoad: () => void;
+  onGoHome: () => void; // Added onGoHome prop
 }
 
-export default function Header({ onExport, onToggleSettings, onToggleAnalysis, onToggleAI, onSave, onLoad }: HeaderProps) {
+export default function Header({ onExport, onToggleSettings, onToggleAnalysis, onToggleAI, onSave, onLoad, onGoHome }: HeaderProps) {
   const { state } = useResume();
 
   return (
@@ -19,6 +20,15 @@ export default function Header({ onExport, onToggleSettings, onToggleAnalysis, o
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center space-x-3">
+            <button
+              onClick={onGoHome}
+              className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              aria-label="Go to Home"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125h9.75a1.125 1.125 0 001.125-1.125V9.75m-6 9.375l.001.002-.001.002" />
+              </svg>
+            </button>
             <FileText className="h-8 w-8 text-blue-600" />
             <h1 className="text-xl font-bold text-gray-900">Resume Builder</h1>
           </div>
