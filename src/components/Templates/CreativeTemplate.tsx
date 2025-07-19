@@ -90,19 +90,19 @@ export default function CreativeTemplate({ data, theme }: CreativeTemplateProps)
               {personalInfo.website && (
                 <div className="flex items-center space-x-2">
                   <Globe className="h-4 w-4" style={{ color: theme.primaryColor }} />
-                  <span className="text-xs">{personalInfo.website}</span>
+                  <a href={personalInfo.website} target="_blank" rel="noopener noreferrer" className="text-xs hover:underline">{personalInfo.website}</a>
                 </div>
               )}
               {personalInfo.linkedin && (
                 <div className="flex items-center space-x-2">
                   <Linkedin className="h-4 w-4" style={{ color: theme.primaryColor }} />
-                  <span>LinkedIn</span>
+                  <a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer" className="hover:underline">LinkedIn</a>
                 </div>
               )}
               {personalInfo.github && (
                 <div className="flex items-center space-x-2">
                   <Github className="h-4 w-4" style={{ color: theme.primaryColor }} />
-                  <span>GitHub</span>
+                  <a href={personalInfo.github} target="_blank" rel="noopener noreferrer" className="hover:underline">GitHub</a>
                 </div>
               )}
             </div>

@@ -69,19 +69,19 @@ export default function ProfessionalTemplate({ data, theme }: ProfessionalTempla
               {personalInfo.website && (
                 <div className="flex items-center space-x-1">
                   <Globe className="h-4 w-4" />
-                  <span>{personalInfo.website}</span>
+                  <a href={personalInfo.website} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.website}</a>
                 </div>
               )}
               {personalInfo.linkedin && (
                 <div className="flex items-center space-x-1">
                   <Linkedin className="h-4 w-4" />
-                  <span>LinkedIn</span>
+                  <a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer" className="hover:underline">LinkedIn</a>
                 </div>
               )}
               {personalInfo.github && (
                 <div className="flex items-center space-x-1">
                   <Github className="h-4 w-4" />
-                  <span>GitHub</span>
+                  <a href={personalInfo.github} target="_blank" rel="noopener noreferrer" className="hover:underline">GitHub</a>
                 </div>
               )}
             </div>
