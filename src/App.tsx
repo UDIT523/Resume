@@ -117,7 +117,7 @@ function AppContent() {
     setSessionStarted(true);
   };
 
-  const handleContinue = () => {
+  const handleLoad = () => { // Renamed from handleContinue
     const savedData = localStorage.getItem('resumeBuilderData');
     if (savedData) {
       try {
@@ -162,7 +162,7 @@ function AppContent() {
               Start New Resume
             </button>
             <button
-              onClick={handleContinue}
+              onClick={handleLoad} // Changed to handleLoad
               disabled={!hasSavedData}
               className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-400"
             >
@@ -186,6 +186,7 @@ function AppContent() {
         onToggleAnalysis={() => setShowAnalysis(!showAnalysis)}
         onToggleAI={handleToggleAI}
         onSave={handleSave}
+        onLoad={handleLoad} // Added onLoad prop
       />
       
       {/* Export Menu */}
