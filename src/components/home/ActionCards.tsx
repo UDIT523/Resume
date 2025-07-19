@@ -68,7 +68,7 @@ const ActionCards: React.FC<ActionCardsProps> = ({ onStartNew, onLoad }) => {
           />
         </svg>
       ),
-      onClick: () => alert('Upload functionality coming soon!'),
+      onClick: onLoad,
     },
     {
       title: 'Check Resume Score',
