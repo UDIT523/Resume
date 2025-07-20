@@ -190,7 +190,13 @@ export default function ModernTemplate({ data, theme }: ModernTemplateProps) {
               <div key={project.id} className="mb-4">
                 <div className="flex justify-between items-start mb-2">
                   <h3 className="font-semibold" style={{ color: theme.secondaryColor }}>
-                    {project.name}
+                    {project.url ? (
+                      <a href={project.url} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                        {project.name}
+                      </a>
+                    ) : (
+                      project.name
+                    )}
                   </h3>
                   <span className="text-sm text-gray-600">
                     {formatDate(project.startDate)} - {formatDate(project.endDate)}

@@ -10,7 +10,7 @@ interface HomePageProps {
 
 const HomePage: React.FC<HomePageProps> = ({ onStartNew, onLoad }) => {
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center pt-16 pb-8">
+<div className="min-h-screen flex flex-col items-center pt-16 pb-8">
       <HomePageHeader onStartNew={onStartNew} />
       <ActionCards onStartNew={onStartNew} onLoad={onLoad} />
       <ResumeTemplates />

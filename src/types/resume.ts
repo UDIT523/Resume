@@ -113,4 +113,11 @@ export type TemplateType =
   | 'academic'
   | 'compact'
   | 'elegant'
-  | 'classic';
+  | 'classic'
+  | 'chronological'
+  | 'functional'
+  | 'combination'
+  | 'infographic'
+  | 'tech'
+  | 'executive'
+  | 'student';

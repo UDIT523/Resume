@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-image: url('./assets/vecteezy_basic-rgbfuturistic-geometric-modern-blue-professional_.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+#root {
+  background-color: transparent; /* Ensure the root div doesn't hide the background */
+}
+
 /* Custom scrollbar styles */
 @layer utilities {
   .scrollbar-thin {

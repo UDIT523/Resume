@@ -248,7 +248,13 @@ export default function CreativeTemplate({ data, theme }: CreativeTemplateProps)
                   <div className="ml-6">
                     <div className="flex justify-between items-start mb-2">
                       <h3 className="font-bold" style={{ color: theme.secondaryColor }}>
-                        {project.name}
+                        {project.url ? (
+                          <a href={project.url} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                            {project.name}
+                          </a>
+                        ) : (
+                          project.name
+                        )}
                       </h3>
                       <span className="text-sm text-gray-600">
                         {formatDate(project.startDate)} - {formatDate(project.endDate)}

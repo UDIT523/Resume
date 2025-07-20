@@ -10,6 +10,13 @@ const templates = [
   { id: 'compact', name: 'Compact', description: 'Space-efficient and concise' },
   { id: 'elegant', name: 'Elegant', description: 'Stylish and sophisticated' },
   { id: 'classic', name: 'Classic', description: 'Timeless and traditional' },
+  { id: 'chronological', name: 'Chronological', description: 'Highlights work history in reverse order' },
+  { id: 'functional', name: 'Functional', description: 'Emphasizes skills over chronological work history' },
+  { id: 'combination', name: 'Combination', description: 'Blends chronological and functional elements' },
+  { id: 'infographic', name: 'Infographic', description: 'Visual and creative representation of skills and experience' },
+  { id: 'tech', name: 'Tech', description: 'Optimized for technology and IT roles' },
+  { id: 'executive', name: 'Executive', description: 'Designed for senior-level professionals' },
+  { id: 'student', name: 'Student', description: 'Tailored for students and recent graduates' },
 ];
 
 export default function TemplatesPage() {
@@ -21,7 +28,7 @@ export default function TemplatesPage() {
   };
 
   return (
-    <div className="p-6 bg-white h-full">
+    <div className="p-6 bg-white h-full overflow-y-auto">
       <h1 className="text-2xl font-bold mb-4">Settings</h1>
       
       <div className="flex border-b mb-6">
