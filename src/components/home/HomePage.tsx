@@ -1,7 +1,6 @@
 import React from 'react';
 import HomePageHeader from './HomePageHeader';
 import ActionCards from './ActionCards';
-import ResumeTemplates from './ResumeTemplates';
 
 interface HomePageProps {
   onStartNew: () => void;
@@ -10,10 +9,9 @@ interface HomePageProps {
 
 const HomePage: React.FC<HomePageProps> = ({ onStartNew, onLoad }) => {
   return (
-<div className="min-h-screen flex flex-col items-center pt-16 pb-8">
+    <div className="min-h-screen flex flex-col items-center pt-16 pb-8">
       <HomePageHeader onStartNew={onStartNew} />
       <ActionCards onStartNew={onStartNew} onLoad={onLoad} />
-      <ResumeTemplates />
     </div>
   );
 };

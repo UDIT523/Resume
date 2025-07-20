@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 interface ActionCardsProps {
   onStartNew: () => void;
@@ -6,6 +6,20 @@ interface ActionCardsProps {
 }
 
 const ActionCards: React.FC<ActionCardsProps> = ({ onStartNew, onLoad }) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      console.log('Selected file:', file);
+      // TODO: Send the file to the backend for processing
+    }
+  };
+
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
   const cards = [
     {
       title: 'Create New Resume',
@@ -68,7 +82,7 @@ const ActionCards: React.FC<ActionCardsProps> = ({ onStartNew, onLoad }) => {
           />
         </svg>
       ),
-      onClick: onLoad,
+      onClick: handleUploadClick,
     },
     {
       title: 'Check Resume Score',
@@ -94,19 +108,28 @@ const ActionCards: React.FC<ActionCardsProps> = ({ onStartNew, onLoad }) => {
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto px-4 mb-16">
-      {cards.map((card, index) => (
-        <button
-          key={index}
-          onClick={card.onClick}
-          className="flex flex-col items-start p-6 bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
-        >
-          <div className="p-3 rounded-full bg-gray-100 mb-4">{card.icon}</div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2 text-left">{card.title}</h3>
-          <p className="text-gray-600 text-left">{card.description}</p>
-        </button>
-      ))}
-    </div>
+    <>
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        className="hidden"
+        accept=".pdf,.doc,.docx,.html,.txt"
+      />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto px-4 mb-16">
+        {cards.map((card, index) => (
+          <button
+            key={index}
+            onClick={card.onClick}
+            className="flex flex-col items-start p-6 bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
+          >
+            <div className="p-3 rounded-full bg-gray-100 mb-4">{card.icon}</div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2 text-left">{card.title}</h3>
+            <p className="text-gray-600 text-left">{card.description}</p>
+          </button>
+        ))}
+      </div>
+    </>
   );
 };
 
