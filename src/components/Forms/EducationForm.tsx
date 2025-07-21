@@ -16,7 +16,9 @@ export default function EducationForm() {
     location: '',
     startDate: '',
     endDate: '',
-    gpa: '',
+    cgpa: undefined, // Changed to undefined for number type
+    tenthPercentage: '',
+    twelfthPercentage: '',
     honors: ''
   });
 
@@ -38,8 +40,8 @@ export default function EducationForm() {
     setEditingIndex(null);
   };
 
-  const handleUpdateEducation = (index: number, field: string, value: string) => {
-    const updated = education.map((edu, i) => 
+  const handleUpdateEducation = (index: number, field: string, value: string | number | undefined) => {
+    const updated = education.map((edu, i) =>
       i === index ? { ...edu, [field]: value } : edu
     );
     dispatch({
@@ -174,14 +176,44 @@ export default function EducationForm() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        GPA (Optional)
+                        CGPA (0.0 - 10.0, Optional)
+                      </label>
+                      <input
+                        type="number"
+                        step="0.1"
+                        min="0.0"
+                        max="10.0"
+                        value={edu.cgpa ?? ''}
+                        onChange={(e) => {
+                          const val = parseFloat(e.target.value);
+                          handleUpdateEducation(index, 'cgpa', isNaN(val) ? undefined : val);
+                        }}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="8.5"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        10th Percentage (Optional)
                       </label>
                       <input
                         type="text"
-                        value={edu.gpa || ''}
-                        onChange={(e) => handleUpdateEducation(index, 'gpa', e.target.value)}
+                        value={edu.tenthPercentage || ''}
+                        onChange={(e) => handleUpdateEducation(index, 'tenthPercentage', e.target.value)}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="3.8/4.0"
+                        placeholder="90%"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        12th Percentage (Optional)
+                      </label>
+                      <input
+                        type="text"
+                        value={edu.twelfthPercentage || ''}
+                        onChange={(e) => handleUpdateEducation(index, 'twelfthPercentage', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="85%"
                       />
                     </div>
                     <div>
@@ -201,7 +233,9 @@ export default function EducationForm() {
               ) : (
                 <div className="text-sm text-gray-600">
                   <p>{edu.location} • {edu.startDate} - {edu.endDate}</p>
-                  {edu.gpa && <p>GPA: {edu.gpa}</p>}
+                  {edu.cgpa && <p>CGPA: {edu.cgpa.toFixed(1)}</p>}
+                  {edu.tenthPercentage && <p>10th Percentage: {edu.tenthPercentage}</p>}
+                  {edu.twelfthPercentage && <p>12th Percentage: {edu.twelfthPercentage}</p>}
                   {edu.honors && <p>{edu.honors}</p>}
                 </div>
               )}

@@ -71,6 +71,11 @@ function AppContent() {
     console.log('AI Assistant state after toggle:', !showAI);
   };
 
+  const handleToggleExportMenu = () => {
+    console.log('Export button clicked, current showExportMenu state:', showExportMenu);
+    setShowExportMenu(!showExportMenu);
+  };
+
   // Handler for full-screen preview toggle
   const handleTogglePreview = () => {
     setShowPreview(!showPreview);
@@ -285,7 +290,7 @@ function AppContent() {
   return (
     <div className="h-screen bg-gray-50 flex flex-col">
       <Header
-        onExport={() => setShowExportMenu(!showExportMenu)}
+        onExport={handleToggleExportMenu}
         onToggleSettings={() => setShowSettings(!showSettings)}
         onToggleAnalysis={() => setShowAnalysis(!showAnalysis)}
         onToggleAI={handleToggleAI}

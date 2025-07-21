@@ -92,7 +92,10 @@ export default function Header({ onExport, onToggleSettings, onToggleAnalysis, o
             
             {/* Export Button */}
             <button
-              onClick={onExport}
+              onClick={() => {
+                console.log('Export button clicked in Header');
+                onExport();
+              }}
               className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
             >
               <Download className="h-4 w-4" />

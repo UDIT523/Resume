@@ -11,7 +11,7 @@ import ElegantTemplate from '../components/Templates/LaTeX/ElegantTemplate';
 import CompactTemplate from '../components/Templates/LaTeX/CompactTemplate';
 
 export const exportToPDF = async () => {
-  const previewElement = document.getElementById('resume-preview-container');
+  const previewElement = document.getElementById('resume-preview-container') || document.getElementById('resume-live-preview-container');
   if (!previewElement) return;
 
   const printWindow = window.open('', '_blank');
@@ -82,7 +82,7 @@ const getTemplateComponent = (template: string) => {
 };
 
 export const exportToHTML = (data: ResumeData, theme: ResumeTheme) => {
-  const previewElement = document.getElementById('resume-preview-container');
+  const previewElement = document.getElementById('resume-preview-container') || document.getElementById('resume-live-preview-container');
   if (!previewElement) return;
 
   const styles = Array.from(document.styleSheets)
@@ -125,7 +125,7 @@ export const exportToHTML = (data: ResumeData, theme: ResumeTheme) => {
 };
 
 export const exportToWord = async (data: ResumeData, theme: ResumeTheme) => {
-  const previewElement = document.getElementById('resume-preview-container');
+  const previewElement = document.getElementById('resume-preview-container') || document.getElementById('resume-live-preview-container');
   if (!previewElement) return;
 
   const htmlToDocx = (await import('html-to-docx')).default;

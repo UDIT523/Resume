@@ -115,11 +115,11 @@ export default function ProfessionalTemplate({ data, theme }: ProfessionalTempla
                     <p>{formatDate(exp.startDate)} - {exp.current ? 'Present' : formatDate(exp.endDate)}</p>
                   </div>
                 </div>
-                <p className="text-gray-700 mb-2">{exp.description}</p>
+                <p className="text-gray-700 mb-2 text-justify">{exp.description}</p>
                 {exp.achievements.filter(Boolean).length > 0 && (
                   <ul className="list-disc list-inside text-gray-700 space-y-1 ml-4">
                     {exp.achievements.filter(Boolean).map((achievement, achIndex) => (
-                      <li key={achIndex}>{achievement}</li>
+                      <li key={achIndex} className="text-justify">{achievement}</li>
                     ))}
                   </ul>
                 )}
@@ -140,7 +140,9 @@ export default function ProfessionalTemplate({ data, theme }: ProfessionalTempla
                       {edu.degree} in {edu.field}
                     </h3>
                     <p className="text-gray-700">{edu.institution} | {edu.location}</p>
-                    {edu.gpa && <p className="text-gray-600 text-sm">GPA: {edu.gpa}</p>}
+                    {edu.cgpa && <p className="text-gray-600 text-sm">CGPA: {edu.cgpa.toFixed(1)}</p>}
+                    {edu.tenthPercentage && <p className="text-gray-600 text-sm">10th Percentage: {edu.tenthPercentage}</p>}
+                    {edu.twelfthPercentage && <p className="text-gray-600 text-sm">12th Percentage: {edu.twelfthPercentage}</p>}
                     {edu.honors && <p className="text-gray-600 text-sm">{edu.honors}</p>}
                   </div>
                   <div className="text-sm text-gray-600">
@@ -201,7 +203,7 @@ export default function ProfessionalTemplate({ data, theme }: ProfessionalTempla
                     {formatDate(project.startDate)} - {formatDate(project.endDate)}
                   </span>
                 </div>
-                <p className="text-gray-700 mb-2">{project.description}</p>
+                <p className="text-gray-700 mb-2 text-justify">{project.description}</p>
                 <div className="flex flex-wrap gap-2">
                   {project.technologies.map((tech, techIndex) => (
                     <span 
@@ -238,7 +240,7 @@ export default function ProfessionalTemplate({ data, theme }: ProfessionalTempla
                         cert.name
                       )}
                     </h3>
-                    <p className="text-gray-700">{cert.issuer}</p>
+                    <p className="text-gray-700 text-justify">{cert.issuer}</p>
                   </div>
                   <span className="text-sm text-gray-600">{cert.date}</span>
                 </div>
@@ -258,8 +260,8 @@ export default function ProfessionalTemplate({ data, theme }: ProfessionalTempla
                     <h3 className="font-bold" style={{ color: theme.secondaryColor }}>
                       {award.name}
                     </h3>
-                    <p className="text-gray-700">{award.issuer}</p>
-                    <p className="text-gray-600 text-sm">{award.description}</p>
+                    <p className="text-gray-700 text-justify">{award.issuer}</p>
+                    <p className="text-gray-600 text-sm text-justify">{award.description}</p>
                   </div>
                   <span className="text-sm text-gray-600">{award.date}</span>
                 </div>

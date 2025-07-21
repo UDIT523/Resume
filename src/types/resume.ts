@@ -29,7 +29,9 @@ export interface Education {
   location: string;
   startDate: string;
   endDate: string;
-  gpa?: string;
+  cgpa?: number; // Changed from gpa to cgpa, type number for 0.0 to 10.0
+  tenthPercentage?: string; // Optional 10th percentage
+  twelfthPercentage?: string; // Optional 12th percentage
   honors?: string;
 }
 
