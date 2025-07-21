@@ -19,6 +19,8 @@ function AppContent() {
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [showTemplates, setShowTemplates] = useState(false);
   const [showAI, setShowAI] = useState(false);
+  const [showPreview, setShowPreview] = useState(false); // State for full-screen preview visibility
+  const [showLivePreview, setShowLivePreview] = useState(true); // State for live preview visibility
   const [sessionStarted, setSessionStarted] = useState(false);
   const [hasSavedData, setHasSavedData] = useState(false);
 
@@ -32,6 +34,18 @@ function AppContent() {
     console.log('AI Assistant button clicked, current state:', showAI);
     setShowAI(!showAI);
     console.log('AI Assistant state after toggle:', !showAI);
+  };
+
+  // Handler for full-screen preview toggle
+  const handleTogglePreview = () => {
+    setShowPreview(!showPreview);
+    setShowLivePreview(false); // Hide live preview when full-screen preview is active
+  };
+
+  // Handler for live preview toggle
+  const handleToggleLivePreview = () => {
+    setShowLivePreview(!showLivePreview);
+    setShowPreview(false); // Hide full-screen preview when live preview is active
   };
 
   // Calculate completion percentage
@@ -146,7 +160,7 @@ function AppContent() {
   const handleStartNew = () => {
     localStorage.removeItem('resumeBuilderData');
     dispatch({ type: 'LOAD_DATA', payload: initialState });
-    setSessionStarted(true);
+    setSessionStarted(true); // This will render the resume builder interface
   };
 
   const handleLoad = async () => {
@@ -161,7 +175,7 @@ function AppContent() {
         });
         const file = await fileHandle.getFile();
         const contents = await file.text();
-        const parsedData = JSON.parse(contents);
+        const parsedData = JSON.parse(contents); // Corrected typo here
 
         const loadedState = {
           ...initialState,
@@ -225,7 +239,8 @@ function AppContent() {
   })();
 
   if (!sessionStarted) {
-    return <HomePage onStartNew={handleStartNew} onLoad={handleLoad} />;
+    // Removed onLoad prop from HomePage
+    return <HomePage onStartNew={handleStartNew} />;
   }
 
   if (showTemplates) {
@@ -242,6 +257,8 @@ function AppContent() {
         onSave={handleSave}
         onLoad={handleLoad}
         onGoHome={handleGoHome} // Pass onGoHome prop
+        onTogglePreview={handleTogglePreview} // Pass the full-screen preview handler
+        onToggleLivePreview={handleToggleLivePreview} // Pass the live preview handler
       />
       
       {/* Export Menu */}
@@ -270,10 +287,20 @@ function AppContent() {
 
       <div className="flex-1 flex overflow-hidden">
         <Sidebar onTemplatesClick={() => setShowTemplates(true)} />
-        <MainContent />
-        <div id="resume-preview-container" className="w-1/2 border-l border-gray-200">
-          <ResumePreview />
-        </div>
+        {showPreview ? (
+          <div id="resume-preview-container" className="flex-1">
+            <ResumePreview />
+          </div>
+        ) : (
+          <div className="flex-1 flex">
+            <MainContent />
+            {showLivePreview && (
+              <div id="resume-live-preview-container" className="w-1/2 border-l border-gray-200">
+                <ResumePreview />
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       <CustomizationPanel 

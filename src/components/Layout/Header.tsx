@@ -1,5 +1,5 @@
 import React from 'react';
-import { FileText, Download, Settings, BarChart3, Bot, Save, FolderOpen } from 'lucide-react';
+import { FileText, Download, Settings, BarChart3, Bot, Save, FolderOpen, Eye } from 'lucide-react';
 import { useResume } from '../../context/ResumeContext';
 
 interface HeaderProps {
@@ -10,16 +10,18 @@ interface HeaderProps {
   onSave: () => void;
   onLoad: () => void;
   onGoHome: () => void; // Added onGoHome prop
+  onTogglePreview: () => void; // Added prop for preview toggle
+  onToggleLivePreview: () => void; // Added prop for live preview toggle
 }
 
-export default function Header({ onExport, onToggleSettings, onToggleAnalysis, onToggleAI, onSave, onLoad, onGoHome }: HeaderProps) {
+export default function Header({ onExport, onToggleSettings, onToggleAnalysis, onToggleAI, onSave, onLoad, onGoHome, onTogglePreview, onToggleLivePreview }: HeaderProps) {
   const { state } = useResume();
 
   return (
     <header className="bg-white shadow-sm border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-3 mr-8">
             <button
               onClick={onGoHome}
               className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
@@ -29,7 +31,7 @@ export default function Header({ onExport, onToggleSettings, onToggleAnalysis, o
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
               </svg>
             </button>
-            <h1 className="text-xl font-bold text-gray-900">Resume Builder</h1>
+            <h1 className="text-xl font-bold text-gray-900 whitespace-nowrap">Resume Builder</h1>
           </div>
           
           <div className="flex items-center space-x-4">
@@ -48,10 +50,10 @@ export default function Header({ onExport, onToggleSettings, onToggleAnalysis, o
             
             <button
               onClick={onToggleAnalysis}
-              className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
+              className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors whitespace-nowrap"
             >
               <BarChart3 className="h-4 w-4" />
-              <span>ATS Score: {state.atsAnalysis.score}%</span>
+              <span className="whitespace-nowrap">ATS Score: {state.atsAnalysis.score}%</span>
             </button>
             
             <button
@@ -61,7 +63,7 @@ export default function Header({ onExport, onToggleSettings, onToggleAnalysis, o
               aria-label="Open AI Assistant"
             >
               <Bot className="h-4 w-4" />
-              <span>AI Assistant</span>
+              <span className="whitespace-nowrap">AI Assistant</span>
             </button>
             
             <button
@@ -82,7 +84,7 @@ export default function Header({ onExport, onToggleSettings, onToggleAnalysis, o
             
             <button
               onClick={onSave}
-              className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-colors"
+              className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-colors whitespace-nowrap"
             >
               <Save className="h-4 w-4" />
               <span>Save Progress</span>
@@ -94,6 +96,26 @@ export default function Header({ onExport, onToggleSettings, onToggleAnalysis, o
             >
               <Download className="h-4 w-4" />
               <span>Export</span>
+            </button>
+
+            {/* Live Preview Button */}
+            <button
+              onClick={onToggleLivePreview}
+              className="flex items-center space-x-1 px-2 py-1 text-xs font-medium text-gray-700 hover:text-blue-600 transition-colors rounded-lg"
+              aria-label="Show Live Preview"
+            >
+              <Eye className="h-4 w-4" />
+              <span>Show Live Preview</span>
+            </button>
+
+            {/* Full-screen Preview Button */}
+            <button
+              onClick={onTogglePreview}
+              className="flex items-center space-x-1 px-2 py-1 text-xs font-medium text-gray-700 hover:text-blue-600 transition-colors rounded-lg"
+              aria-label="Show Preview"
+            >
+              <FileText className="h-4 w-4" />
+              <span>Show Preview</span>
             </button>
           </div>
         </div>
