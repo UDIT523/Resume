@@ -4,10 +4,9 @@ import { ResumeData } from '../../types/resume';
 interface ActionCardsProps {
   onStartNew: () => void;
   onLoad: (data: ResumeData) => void;
-  onPreview: () => void; // Add onPreview prop
 }
 
-const ActionCards: React.FC<ActionCardsProps> = ({ onStartNew, onLoad, onPreview }) => {
+const ActionCards: React.FC<ActionCardsProps> = ({ onStartNew, onLoad }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -124,64 +123,13 @@ const ActionCards: React.FC<ActionCardsProps> = ({ onStartNew, onLoad, onPreview
       ),
       onClick: () => alert('Resume score analysis coming soon!'),
     },
-    {
-      title: 'Preview Resume',
-      description: 'See a preview of your current resume.',
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-8 w-8 text-green-600"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-          />
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M2.458 12C3.742 5.937 10.365 3 12 3s8.258 2.937 9.542 9c-1.285 6.063-8.955 9-11.542 9-2.615 0-7.329-2.937-8.542-9z"
-          />
-        </svg>
-      ),
-      onClick: onPreview, // Call the onPreview prop
-    },
-    {
-      title: 'Export Resume',
-      description: 'Download your resume in various formats.',
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-8 w-8 text-blue-600"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-          />
-        </svg>
-      ),
-      onClick: () => console.log('Export functionality not yet implemented.'), // Placeholder
-    },
   ];
 
-  // Reorder cards to place Export before Preview
   const reorderedCards = [
     cards[0], // Create New Resume
     cards[1], // Import from LinkedIn
     cards[2], // Upload Existing Resume
     cards[3], // Check Resume Score
-    cards[5], // Export Resume
-    cards[4], // Preview Resume
   ];
 
   return (

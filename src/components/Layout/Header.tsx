@@ -9,9 +9,9 @@ interface HeaderProps {
   onToggleAI: () => void;
   onSave: () => void;
   onLoad: () => void;
-  onGoHome: () => void; // Added onGoHome prop
-  onTogglePreview: () => void; // Added prop for preview toggle
-  onToggleLivePreview: () => void; // Added prop for live preview toggle
+  onGoHome: () => void;
+  onTogglePreview: () => void;
+  onToggleLivePreview: () => void;
 }
 
 export default function Header({ onExport, onToggleSettings, onToggleAnalysis, onToggleAI, onSave, onLoad, onGoHome, onTogglePreview, onToggleLivePreview }: HeaderProps) {
@@ -90,32 +90,33 @@ export default function Header({ onExport, onToggleSettings, onToggleAnalysis, o
               <span>Save Progress</span>
             </button>
             
+            {/* Export Button */}
             <button
               onClick={onExport}
-              className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
             >
               <Download className="h-4 w-4" />
               <span>Export</span>
-            </button>
-
-            {/* Live Preview Button */}
-            <button
-              onClick={onToggleLivePreview}
-              className="flex items-center space-x-1 px-2 py-1 text-xs font-medium text-gray-700 hover:text-blue-600 transition-colors rounded-lg"
-              aria-label="Show Live Preview"
-            >
-              <Eye className="h-4 w-4" />
-              <span>Show Live Preview</span>
             </button>
 
             {/* Full-screen Preview Button */}
             <button
               onClick={onTogglePreview}
               className="flex items-center space-x-1 px-2 py-1 text-xs font-medium text-gray-700 hover:text-blue-600 transition-colors rounded-lg"
-              aria-label="Show Preview"
+              aria-label="Toggle Full-screen Preview"
             >
-              <FileText className="h-4 w-4" />
-              <span>Show Preview</span>
+              <Eye className="h-4 w-4" />
+              <span>Full Preview</span>
+            </button>
+
+            {/* Live Preview Button */}
+            <button
+              onClick={onToggleLivePreview}
+              className="flex items-center space-x-1 px-2 py-1 text-xs font-medium text-gray-700 hover:text-blue-600 transition-colors rounded-lg"
+              aria-label="Toggle Live Preview"
+            >
+              <Eye className="h-4 w-4" />
+              <span>Live Preview</span>
             </button>
           </div>
         </div>

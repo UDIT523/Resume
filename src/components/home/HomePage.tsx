@@ -35,7 +35,6 @@ const HomePage: React.FC<HomePageProps> = ({ onStartNew }) => {
   return (
     <div className="min-h-screen flex flex-col items-center pt-16 pb-8">
       <HomePageHeader onStartNew={onStartNew} />
-      {/* Removed onPreview prop */}
       <ActionCards onStartNew={onStartNew} onLoad={handleLoad} />
 
       {/* Removed conditional rendering of preview */}

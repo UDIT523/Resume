@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ResumeProvider, useResume, initialState } from './context/ResumeContext';
 import Header from './components/Layout/Header';
 import Sidebar from './components/Layout/Sidebar';
@@ -21,6 +21,9 @@ function AppContent() {
   const [showAI, setShowAI] = useState(false);
   const [showPreview, setShowPreview] = useState(false); // State for full-screen preview visibility
   const [showLivePreview, setShowLivePreview] = useState(true); // State for live preview visibility
+  const [mainContentWidth, setMainContentWidth] = useState(60); // Initial width for MainContent in percentage
+  const [isResizing, setIsResizing] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [sessionStarted, setSessionStarted] = useState(false);
   const [hasSavedData, setHasSavedData] = useState(false);
 
@@ -28,6 +31,38 @@ function AppContent() {
     const savedData = localStorage.getItem('resumeBuilderData');
     setHasSavedData(!!savedData);
   }, []);
+
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsResizing(true);
+  }, []);
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (!isResizing || !containerRef.current) return;
+
+    const containerRect = containerRef.current.getBoundingClientRect();
+    const newWidth = ((e.clientX - containerRect.left) / containerRect.width) * 100;
+
+    // Ensure minimum width for both panels
+    const minWidth = 20; // Minimum percentage width for each panel
+    if (newWidth > minWidth && (100 - newWidth) > minWidth) {
+      setMainContentWidth(newWidth);
+    }
+  }, [isResizing]);
+
+  const handleMouseUp = useCallback(() => {
+    setIsResizing(false);
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [handleMouseMove, handleMouseUp]);
 
   // Debug function to test AI toggle
   const handleToggleAI = () => {
@@ -292,12 +327,24 @@ function AppContent() {
             <ResumePreview />
           </div>
         ) : (
-          <div className="flex-1 flex">
-            <MainContent />
+          <div className="flex-1 flex" ref={containerRef}>
+            <div style={{ width: `${mainContentWidth}%` }} className="flex-shrink-0">
+              <MainContent />
+            </div>
             {showLivePreview && (
-              <div id="resume-live-preview-container" className="w-1/2 border-l border-gray-200">
-                <ResumePreview />
-              </div>
+              <>
+                <div
+                  className="w-2 bg-gray-200 cursor-ew-resize flex-shrink-0"
+                  onMouseDown={handleMouseDown}
+                ></div>
+                <div
+                  id="resume-live-preview-container"
+                  style={{ width: `${100 - mainContentWidth}%` }}
+                  className="flex-shrink-0 border-l border-gray-200"
+                >
+                  <ResumePreview />
+                </div>
+              </>
             )}
           </div>
         )}
