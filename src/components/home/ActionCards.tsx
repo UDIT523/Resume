@@ -4,38 +4,58 @@ import { ResumeData } from '../../types/resume';
 interface ActionCardsProps {
   onStartNew: () => void;
   onLoad: (data: ResumeData) => void;
+  onCheckScore: (data: any) => void; // New prop for checking score
 }
 
-const ActionCards: React.FC<ActionCardsProps> = ({ onStartNew, onLoad }) => {
+const ActionCards: React.FC<ActionCardsProps> = ({ onStartNew, onLoad, onCheckScore }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const checkScoreFileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>, callback: (data: any) => void) => {
     const file = event.target.files?.[0];
     if (file) {
-      const formData = new FormData();
-      formData.append('resume', file);
+      if (file.type === 'application/json') {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const json = JSON.parse(e.target?.result as string);
+            console.log('Parsed JSON data:', json);
+            callback(json);
+          } catch (error) {
+            console.error('Error parsing JSON file:', error);
+          }
+        };
+        reader.readAsText(file);
+      } else {
+        const formData = new FormData();
+        formData.append('resume', file);
 
-      try {
-        const response = await fetch('/api/upload/resume', {
-          method: 'POST',
-          body: formData,
-        });
+        try {
+          const response = await fetch('/api/upload/resume', {
+            method: 'POST',
+            body: formData,
+          });
 
-        if (response.ok) {
-          const data = await response.json();
-          console.log('Resume uploaded and processed:', data);
-          onLoad(data); // Pass the loaded data to the parent component
-        } else {
-          console.error('Failed to upload resume:', response.statusText);
+          if (response.ok) {
+            const data = await response.json();
+            console.log('Resume uploaded and processed:', data);
+            callback(data); // Use the callback to handle the response
+          } else {
+            console.error('Failed to upload resume:', response.statusText);
+          }
+        } catch (error) {
+          console.error('Error uploading resume:', error);
         }
-      } catch (error) {
-        console.error('Error uploading resume:', error);
       }
     }
   };
 
-  const handleUploadResumeClick = async () => {
+  const handleUploadResumeClick = () => {
     fileInputRef.current?.click();
+  };
+
+  const handleCheckScoreClick = () => {
+    checkScoreFileInputRef.current?.click();
   };
 
   const cards = [
@@ -121,7 +141,7 @@ const ActionCards: React.FC<ActionCardsProps> = ({ onStartNew, onLoad }) => {
           />
         </svg>
       ),
-      onClick: () => alert('Resume score analysis coming soon!'),
+      onClick: handleCheckScoreClick,
     },
   ];
 
@@ -137,9 +157,16 @@ const ActionCards: React.FC<ActionCardsProps> = ({ onStartNew, onLoad }) => {
       <input
         type="file"
         ref={fileInputRef}
-        onChange={handleFileChange}
+        onChange={(e) => handleFileChange(e, onLoad)}
         className="hidden"
         accept=".pdf,.doc,.docx,.html,.txt"
+      />
+      <input
+        type="file"
+        ref={checkScoreFileInputRef}
+        onChange={(e) => handleFileChange(e, onCheckScore)}
+        className="hidden"
+        accept=".json"
       />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto px-4 mb-16">
         {reorderedCards.map((card, index) => (

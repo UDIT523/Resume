@@ -47,6 +47,14 @@ export default function ProfessionalTemplate({ data, theme }: ProfessionalTempla
       {/* Header */}
       <div className="p-8 border-b-2" style={{ borderColor: theme.primaryColor }}>
         <div className="text-center">
+          {personalInfo.profilePicture && (
+            <img
+              src={personalInfo.profilePicture}
+              alt="Profile"
+              className="w-32 h-32 rounded-full mx-auto mb-4 object-cover border-4"
+              style={{ borderColor: theme.primaryColor }}
+            />
+          )}
           <h1 className="text-3xl font-bold mb-2" style={{ color: theme.primaryColor }}>
             {personalInfo.firstName} {personalInfo.lastName}
           </h1>

@@ -279,8 +279,7 @@ function AppContent() {
   })();
 
   if (!sessionStarted) {
-    // Removed onLoad prop from HomePage
-    return <HomePage onStartNew={handleStartNew} />;
+    return <HomePage onStartNew={handleStartNew} onLoad={handleLoad} />;
   }
 
   if (showTemplates) {

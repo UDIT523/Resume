@@ -1,10 +1,30 @@
 import express from 'express';
 import multer from 'multer';
 import pdf from 'pdf-parse';
+import path from 'path';
+import fs from 'fs';
 import { ResumeData } from '../../src/types/resume'; // Assuming types are available in a shared location
 
 const router = express.Router();
-const upload = multer({ storage: multer.memoryStorage() });
+
+// Ensure the uploads directory exists
+const uploadsDir = path.join(__dirname, '..', 'public', 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+// Multer storage configuration for profile pictures
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadsDir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+  },
+});
+
+const upload = multer({ storage });
 
 // Placeholder function to parse resume text into ResumeData format
 const parseResumeText = (text: string): ResumeData => {
@@ -114,6 +134,14 @@ router.post('/resume', upload.single('resume'), async (req, res) => {
     console.error('Error processing resume:', error);
     res.status(500).send('Error processing resume.');
   }
+});
+
+router.post('/profile-picture', upload.single('profilePicture'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).send('No file uploaded.');
+  }
+  const filePath = `/uploads/${req.file.filename}`;
+  res.json({ filePath });
 });
 
 export default router;

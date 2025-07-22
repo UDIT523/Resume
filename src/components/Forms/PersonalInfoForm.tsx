@@ -1,15 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useResume } from '../../context/ResumeContext';
 
 export default function PersonalInfoForm() {
   const { state, dispatch } = useResume();
   const { personalInfo } = state.data;
+  const [profilePictureFile, setProfilePictureFile] = useState<File | null>(null);
 
   const handleChange = (field: string, value: string) => {
     dispatch({
       type: 'UPDATE_PERSONAL_INFO',
-      payload: { [field]: value }
+      payload: { [field]: value },
     });
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setProfilePictureFile(e.target.files[0]);
+    }
+  };
+
+  const handleUpload = async () => {
+    if (!profilePictureFile) return;
+
+    const formData = new FormData();
+    formData.append('profilePicture', profilePictureFile);
+
+    try {
+      const response = await fetch('/api/upload/profile-picture', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        handleChange('profilePicture', data.filePath);
+      } else {
+        console.error('Failed to upload profile picture');
+      }
+    } catch (error) {
+      console.error('Error uploading profile picture:', error);
+    }
   };
 
   return (
@@ -122,6 +152,36 @@ export default function PersonalInfoForm() {
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="https://github.com/johndoe"
           />
+        </div>
+
+        <div className="md:col-span-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Profile Picture
+          </label>
+          <div className="flex items-center space-x-4">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+            <button
+              onClick={handleUpload}
+              disabled={!profilePictureFile}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400"
+            >
+              Upload
+            </button>
+          </div>
+          {personalInfo.profilePicture && (
+            <div className="mt-4">
+              <img
+                src={personalInfo.profilePicture}
+                alt="Profile"
+                className="w-24 h-24 rounded-full object-cover"
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

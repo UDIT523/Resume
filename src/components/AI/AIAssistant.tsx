@@ -30,7 +30,7 @@ interface Suggestion {
 export default function AIAssistant({ isOpen, onClose }: AIAssistantProps) {
   const { state, dispatch } = useResume();
   const { data } = state;
-  const [activeTab, setActiveTab] = useState<'suggestions' | 'generate' | 'improve'>('suggestions');
+  const [activeTab, setActiveTab] = useState<'suggestions' | 'generate' | 'improve'>('generate');
   const [selectedSection, setSelectedSection] = useState<string>('summary');
   const [userInput, setUserInput] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
@@ -40,10 +40,13 @@ export default function AIAssistant({ isOpen, onClose }: AIAssistantProps) {
   // Debug effect to track when component mounts/unmounts
   React.useEffect(() => {
     console.log('AIAssistant component mounted/updated, isOpen:', isOpen);
+    if (isOpen && activeTab === 'generate') {
+      generateContent(selectedSection, "Generate a professional summary for a software engineer with 5 years of experience.");
+    }
     return () => {
       console.log('AIAssistant component cleanup');
     };
-  }, [isOpen]);
+  }, [isOpen, activeTab]);
 
   const getSuggestions = (): Suggestion[] => {
     const suggestions: Suggestion[] = [];

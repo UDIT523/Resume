@@ -45,16 +45,25 @@ export default function ModernTemplate({ data, theme }: ModernTemplateProps) {
       }}
     >
       {/* Header */}
-      <div 
+      <div
         className="p-8 text-white"
         style={{ backgroundColor: theme.primaryColor }}
       >
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold mb-2">
-              {personalInfo.firstName} {personalInfo.lastName}
-            </h1>
-            <p className="text-lg opacity-90 mb-4">{personalInfo.email}</p>
+          <div className="flex items-center space-x-6">
+            {personalInfo.profilePicture && (
+              <img
+                src={personalInfo.profilePicture}
+                alt="Profile"
+                className="w-24 h-24 rounded-full object-cover border-4 border-white"
+              />
+            )}
+            <div>
+              <h1 className="text-3xl font-bold mb-2">
+                {personalInfo.firstName} {personalInfo.lastName}
+              </h1>
+              <p className="text-lg opacity-90 mb-4">{personalInfo.email}</p>
+            </div>
           </div>
           <div className="text-right space-y-2">
             <div className="flex items-center justify-end space-x-2">

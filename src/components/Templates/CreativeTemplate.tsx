@@ -58,12 +58,21 @@ export default function CreativeTemplate({ data, theme }: CreativeTemplateProps)
         {/* Left Sidebar */}
         <div className="w-1/3 p-6" style={{ backgroundColor: theme.primaryColor + '15' }}>
           <div className="text-center mb-8">
-            <div 
-              className="w-32 h-32 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-3xl font-bold"
-              style={{ backgroundColor: theme.primaryColor }}
-            >
-              {personalInfo.firstName.charAt(0)}{personalInfo.lastName.charAt(0)}
-            </div>
+            {personalInfo.profilePicture ? (
+              <img
+                src={personalInfo.profilePicture}
+                alt="Profile"
+                className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
+              />
+            ) : (
+              <div
+                className="w-32 h-32 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-3xl font-bold"
+                style={{ backgroundColor: theme.primaryColor }}
+              >
+                {personalInfo.firstName.charAt(0)}
+                {personalInfo.lastName.charAt(0)}
+              </div>
+            )}
             <h1 className="text-2xl font-bold mb-2" style={{ color: theme.primaryColor }}>
               {personalInfo.firstName} {personalInfo.lastName}
             </h1>

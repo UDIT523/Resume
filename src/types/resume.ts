@@ -7,6 +7,7 @@ export interface PersonalInfo {
   website?: string;
   linkedin?: string;
   github?: string;
+  profilePicture?: string;
 }
 
 export interface WorkExperience {
