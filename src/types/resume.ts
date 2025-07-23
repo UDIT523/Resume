@@ -24,6 +24,7 @@ export interface WorkExperience {
 
 export interface Education {
   id: string;
+  school: string;
   institution: string;
   degree: string;
   field: string;
@@ -32,7 +33,9 @@ export interface Education {
   endDate: string;
   cgpa?: number; // Changed from gpa to cgpa, type number for 0.0 to 10.0
   tenthPercentage?: string; // Optional 10th percentage
+  tenthPercentageYear?: string; // Optional 10th percentage year
   twelfthPercentage?: string; // Optional 12th percentage
+  twelfthPercentageYear?: string; // Optional 12th percentage year
   honors?: string;
 }
 

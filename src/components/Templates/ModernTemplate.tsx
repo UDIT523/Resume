@@ -100,7 +100,7 @@ export default function ModernTemplate({ data, theme }: ModernTemplateProps) {
         {/* Summary */}
         {summary && (
           <div style={sectionStyle}>
-            <h2 style={headingStyle}>Professional Summary</h2>
+            <h2 style={headingStyle}>Summary</h2>
             <p className="text-gray-700 leading-relaxed text-justify">{summary}</p>
           </div>
         )}
@@ -155,8 +155,8 @@ export default function ModernTemplate({ data, theme }: ModernTemplateProps) {
                   </div>
                 </div>
                 {edu.cgpa && <p className="text-gray-600 text-sm">CGPA: {edu.cgpa.toFixed(1)}</p>}
-                {edu.tenthPercentage && <p className="text-gray-600 text-sm">10th Percentage: {edu.tenthPercentage}</p>}
-                {edu.twelfthPercentage && <p className="text-gray-600 text-sm">12th Percentage: {edu.twelfthPercentage}</p>}
+                {edu.tenthPercentage && <p className="text-gray-600 text-sm">10th Percentage: {edu.tenthPercentage} ({edu.school}) - {edu.tenthPercentageYear}</p>}
+                {edu.twelfthPercentage && <p className="text-gray-600 text-sm">12th Percentage: {edu.twelfthPercentage} ({edu.school}) - {edu.twelfthPercentageYear}</p>}
                 {edu.honors && <p className="text-gray-600 text-sm">{edu.honors}</p>}
               </div>
             ))}

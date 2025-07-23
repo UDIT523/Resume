@@ -23,7 +23,7 @@ export default function SummaryForm() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Professional Summary</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">Summary</h2>
         <p className="text-gray-600">Write a compelling summary that highlights your key qualifications.</p>
       </div>
 

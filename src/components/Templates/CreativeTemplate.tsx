@@ -170,7 +170,7 @@ export default function CreativeTemplate({ data, theme }: CreativeTemplateProps)
             <div style={sectionStyle}>
               <h2 style={headingStyle}>
                 <span className="absolute left-0 top-0 w-1 h-full rounded" style={{ backgroundColor: theme.primaryColor }}></span>
-                About Me
+                Summary
               </h2>
               <p className="text-gray-700 leading-relaxed text-justify">{summary}</p>
             </div>
@@ -232,8 +232,8 @@ export default function CreativeTemplate({ data, theme }: CreativeTemplateProps)
                         <p className="text-gray-700">{edu.institution}</p>
                         <p className="text-gray-600 text-sm">{edu.location}</p>
                         {edu.cgpa && <p className="text-gray-600 text-sm">CGPA: {edu.cgpa.toFixed(1)}</p>}
-                        {edu.tenthPercentage && <p className="text-gray-600 text-sm">10th Percentage: {edu.tenthPercentage}</p>}
-                        {edu.twelfthPercentage && <p className="text-gray-600 text-sm">12th Percentage: {edu.twelfthPercentage}</p>}
+                        {edu.tenthPercentage && <p className="text-gray-600 text-sm">10th Percentage: {edu.tenthPercentage} ({edu.school}) - {edu.tenthPercentageYear}</p>}
+                        {edu.twelfthPercentage && <p className="text-gray-600 text-sm">12th Percentage: {edu.twelfthPercentage} ({edu.school}) - {edu.twelfthPercentageYear}</p>}
                         {edu.honors && <p className="text-gray-600 text-sm">{edu.honors}</p>}
                       </div>
                       <div className="text-sm text-gray-600">

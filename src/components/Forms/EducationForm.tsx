@@ -10,6 +10,7 @@ export default function EducationForm() {
 
   const createNewEducation = (): Education => ({
     id: Date.now().toString(),
+    school: '',
     institution: '',
     degree: '',
     field: '',
@@ -18,7 +19,9 @@ export default function EducationForm() {
     endDate: '',
     cgpa: undefined, // Changed to undefined for number type
     tenthPercentage: '',
+    tenthPercentageYear: '',
     twelfthPercentage: '',
+    twelfthPercentageYear: '',
     honors: ''
   });
 
@@ -118,6 +121,18 @@ export default function EducationForm() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
+                        School
+                      </label>
+                      <input
+                        type="text"
+                        value={edu.school}
+                        onChange={(e) => handleUpdateEducation(index, 'school', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="e.g. School of Engineering"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
                         Degree
                       </label>
                       <input
@@ -206,6 +221,18 @@ export default function EducationForm() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
+                        10th Percentage Year (Optional)
+                      </label>
+                      <input
+                        type="text"
+                        value={edu.tenthPercentageYear || ''}
+                        onChange={(e) => handleUpdateEducation(index, 'tenthPercentageYear', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="e.g. 2015"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
                         12th Percentage (Optional)
                       </label>
                       <input
@@ -214,6 +241,18 @@ export default function EducationForm() {
                         onChange={(e) => handleUpdateEducation(index, 'twelfthPercentage', e.target.value)}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="85%"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        12th Percentage Year (Optional)
+                      </label>
+                      <input
+                        type="text"
+                        value={edu.twelfthPercentageYear || ''}
+                        onChange={(e) => handleUpdateEducation(index, 'twelfthPercentageYear', e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="e.g. 2017"
                       />
                     </div>
                     <div>
@@ -232,10 +271,10 @@ export default function EducationForm() {
                 </div>
               ) : (
                 <div className="text-sm text-gray-600">
-                  <p>{edu.location} • {edu.startDate} - {edu.endDate}</p>
+                  <p>{edu.school} • {edu.location} • {edu.startDate} - {edu.endDate}</p>
                   {edu.cgpa && <p>CGPA: {edu.cgpa.toFixed(1)}</p>}
-                  {edu.tenthPercentage && <p>10th Percentage: {edu.tenthPercentage}</p>}
-                  {edu.twelfthPercentage && <p>12th Percentage: {edu.twelfthPercentage}</p>}
+                  {edu.tenthPercentage && <p>10th Percentage: {edu.tenthPercentage} {edu.school && `(${edu.school})`} {edu.tenthPercentageYear && `- ${edu.tenthPercentageYear}`}</p>}
+                  {edu.twelfthPercentage && <p>12th Percentage: {edu.twelfthPercentage} {edu.school && `(${edu.school})`} {edu.twelfthPercentageYear && `- ${edu.twelfthPercentageYear}`}</p>}
                   {edu.honors && <p>{edu.honors}</p>}
                 </div>
               )}
